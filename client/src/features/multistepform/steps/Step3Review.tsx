@@ -7,7 +7,6 @@ type FormValues = z.infer<typeof schema>;
 const Step3Review = () => {
   const { getValues } = useFormContext<FormValues>();
   const data = getValues();
-  console.log(data)
 
   return (
     <div className="flex flex-col gap-6">
@@ -46,7 +45,7 @@ const Step3Review = () => {
           Shareholders
         </p>
 
-        {data.shareholders.map((s, index) => (
+        {data.shareholders.length > 0 && data.shareholders.map((s, index) => (
           <div
             key={index}
             className="flex flex-col gap-3 p-4 rounded-2xl border border-gray-100 bg-gray-50/50"
@@ -58,15 +57,15 @@ const Step3Review = () => {
             <div className="grid grid-cols-3 gap-4">
               <div className="flex flex-col gap-1">
                 <span className="text-xs text-gray-400">First Name</span>
-                <span className="text-sm font-semibold text-gray-700">{s.firstName}</span>
+                <span className="text-sm font-semibold text-gray-700">{s?.firstName}</span>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-xs text-gray-400">Last Name</span>
-                <span className="text-sm font-semibold text-gray-700">{s.lastName}</span>
+                <span className="text-sm font-semibold text-gray-700">{s?.lastName}</span>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-xs text-gray-400">Nationality</span>
-                <span className="text-sm font-semibold text-gray-700">{s.nationality}</span>
+                <span className="text-sm font-semibold text-gray-700">{s?.nationality}</span>
               </div>
             </div>
 
