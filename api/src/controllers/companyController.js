@@ -4,7 +4,7 @@ const saveDraft = async (req, res) => {
   try {
     const { sessionId, companyName, noOfShareholders, totalCapital } = req.body;
 
-    await pool.query(
+    const result = await pool.query(
       `INSERT INTO companies (session_id, company_name, no_of_shareholders, total_capital, status)
        VALUES (?, ?, ?, ?, 'draft')
        ON DUPLICATE KEY UPDATE
@@ -13,8 +13,9 @@ const saveDraft = async (req, res) => {
          total_capital = VALUES(total_capital)`,
       [sessionId, companyName, noOfShareholders, totalCapital]
     );
+    console.log(result)
 
-    return res.status(200).json({ message: 'Draft saved' });
+    return res.status(200).json({ companyId: result[0].insertId || (await pool.query('SELECT id FROM companies WHERE session_id = ?', [sessionId]))[0][0].id });
 
   } catch (error) {
     console.error('Error saving draft:', error);
@@ -29,7 +30,7 @@ const getCompanyBySessionId = async (req, res) => {
       'SELECT * FROM companies WHERE session_id = ? AND status = ?',
       [sessionId, 'draft']
     );
-
+    console.log(rows);
     if (rows.length === 0) {
       return res.status(404).json({ message: 'No draft found' });
     }

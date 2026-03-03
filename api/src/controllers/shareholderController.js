@@ -13,7 +13,7 @@ const createShareholders = async (req, res) => {
 
     await pool.query('UPDATE companies SET status = ? WHERE id = ?', ['submitted', companyId]);
 
-    return res.status(201).json({ message: 'Shareholders created successfully' });
+    return res.status(201).json({ message: 'Shareholders added to the company successfully' });
   } catch (error) {
     console.error('Error creating shareholders:', error);
     res.status(500).json({ message: 'Internal server error' });
