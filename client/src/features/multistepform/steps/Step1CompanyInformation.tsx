@@ -15,8 +15,6 @@ const inputFields = [
 ];
 
 const Step1CompanyInformation = () => {
-  let valid = true;
-  const onNext = () => {};
   const {
     register,
     formState: { errors },
@@ -28,7 +26,6 @@ const Step1CompanyInformation = () => {
       </p>
       <div className="flex flex-col gap-3">
         {inputFields.map(({ key, placeholder, type }) => (
-          <>
             <div key={key} className="flex flex-col gap-1.5">
               <label
                 htmlFor={key}
@@ -51,7 +48,6 @@ const Step1CompanyInformation = () => {
                 </p>
               )}
             </div>
-          </>
         ))}
       </div>
     </div>

@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const schema = z.object({
   companyName: z.string().min(2, 'Company Name is Required!'),
   noOfShareholders: z.coerce.number().min(1, 'Must be at least 1!'),
-  totalCapital: z.coerce.number().min(0, 'Must be non-negative!'),
+  totalCapital:  z.coerce.number().min(1, 'There must be some capital amount'),
   shareholders: z.array(z.object({
     firstName: z.string().min(2, 'First Name is Required!'),
     lastName:    z.string().min(2, 'Last Name is Required!'),
