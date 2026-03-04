@@ -13,7 +13,6 @@ const saveDraft = async (req, res) => {
          total_capital = VALUES(total_capital)`,
       [sessionId, companyName, noOfShareholders, totalCapital]
     );
-    console.log(result)
 
     return res.status(200).json({ companyId: result[0].insertId || (await pool.query('SELECT id FROM companies WHERE session_id = ?', [sessionId]))[0][0].id });
 
@@ -30,7 +29,6 @@ const getCompanyBySessionId = async (req, res) => {
       'SELECT * FROM companies WHERE session_id = ? AND status = ?',
       [sessionId, 'draft']
     );
-    console.log(rows);
     if (rows.length === 0) {
       return res.status(404).json({ message: 'No draft found' });
     }

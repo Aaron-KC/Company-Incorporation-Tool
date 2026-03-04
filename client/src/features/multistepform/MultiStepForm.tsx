@@ -97,7 +97,7 @@ export default function MultiStepForm() {
       localStorage.setItem(STORAGE_KEY1, JSON.stringify(values));
     });
     return () => sub.unsubscribe();
-  }, []);
+  }, [form.watch]);
 
   const getDraft = async () => {
     const sessionId = localStorage.getItem("draft_session_id");
@@ -111,6 +111,7 @@ export default function MultiStepForm() {
           companyName: draft.company_name,
           noOfShareholders: draft.no_of_shareholders,
           totalCapital: draft.total_capital,
+          shareholders: saved?.shareholders || [],
         });
       }
     } catch (err) {
@@ -120,15 +121,13 @@ export default function MultiStepForm() {
   };
 
   useEffect(() => {
-    if (currentStep === 1) {
+    if (currentStep === 1 && companyId) {
       getDraft();
     }
     localStorage.setItem(STORAGE_KEY2, currentStep.toString());
   }, [currentStep]);
 
   const handleBack = () => setCurrentStep((s) => s - 1);
-
-  const isLastStep = currentStep === STEPS.length;
 
   const StepComponent = STEPS[currentStep - 1].component;
 

@@ -1,0 +1,45 @@
+services:
+  frontend:
+    build:
+      context: ./client
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_BACKEND_URL: http://localhost:8000/api
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./api
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: 8000
+      DB_HOST: db
+      DB_USER: appuser
+      DB_PASSWORD: yourpassword
+      DB_NAME: Corporations
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.db
+    environment:
+      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_DATABASE: Corporations
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: yourpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:

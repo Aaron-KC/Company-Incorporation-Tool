@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS Corporations;
+USE Corporations;
+
+CREATE TABLE IF NOT EXISTS companies (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  session_id VARCHAR(255) UNIQUE NOT NULL,
+  company_name VARCHAR(255) NOT NULL,
+  no_of_shareholders INT NOT NULL,
+  total_capital DECIMAL(15, 2) NOT NULL,
+  status ENUM('draft', 'submitted') DEFAULT 'draft',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS shareholders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  company_id INT NOT NULL,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  nationality VARCHAR(255) NOT NULL,
+  FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+);

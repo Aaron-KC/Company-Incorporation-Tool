@@ -17,4 +17,5 @@ app.use('/api/shareholder', shareholderRoute);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+  console.log(`\n App is ready! Go to http://localhost:5173\n`);
 });
