@@ -9,6 +9,8 @@ import Step3Review from "./steps/Step3Review";
 import { z } from "zod";
 import type { Path } from "react-hook-form";
 import { api } from "../../utils/axios";
+import FormNavigation from "../../components/multistepform/FormNavigation";
+import Title from "../../components/multistepform/Title";
 
 type FormValues = z.infer<typeof schema>;
 
@@ -47,7 +49,9 @@ export default function MultiStepForm() {
     },
   });
   const [loading, setLoading] = useState(false);
-  const [companyId, setCompanyId] = useState<string | null>(null);
+  const [companyId, setCompanyId] = useState<string | null>(
+    localStorage.getItem("draft_company_id"),
+  );
 
   const handleNext = async () => {
     try {
@@ -69,10 +73,10 @@ export default function MultiStepForm() {
             noOfShareholders: data.noOfShareholders,
             totalCapital: data.totalCapital,
           });
-          console.log(res);
 
           if (res.status === 200) {
             setCompanyId(res.data.companyId);
+            localStorage.setItem("draft_company_id", res.data.companyId);
             setCurrentStep((s) => s + 1);
           }
         } else {
@@ -93,7 +97,7 @@ export default function MultiStepForm() {
       localStorage.setItem(STORAGE_KEY1, JSON.stringify(values));
     });
     return () => sub.unsubscribe();
-  }, [form.watch]);
+  }, []);
 
   const getDraft = async () => {
     const sessionId = localStorage.getItem("draft_session_id");
@@ -150,6 +154,7 @@ export default function MultiStepForm() {
         localStorage.removeItem(STORAGE_KEY1);
         localStorage.removeItem(STORAGE_KEY2);
         localStorage.removeItem("draft_session_id");
+        localStorage.removeItem("draft_company_id");
         form.reset({
           companyName: "",
           noOfShareholders: "",
@@ -172,47 +177,10 @@ export default function MultiStepForm() {
           className="bg-white rounded-3xl shadow-2xl shadow-gray-100 p-8 max-w-lg w-full"
           onSubmit={onSubmit}
         >
-          <div className="text-center mb-7">
-            <h1 className="text-2xl font-bold text-gray-900 leading-tight mb-2">
-              Company Incorporation Form
-            </h1>
-            <p className="text-sm text-gray-400 leading-relaxed max-w-sm mx-auto">
-              Apply to incorporate your company in minutes
-            </p>
-          </div>
+          <Title />
           <Header currentStep={currentStep} />
-
           <StepComponent />
-          <div className="flex gap-3 mt-6">
-            {currentStep > 1 && (
-              <button
-                onClick={handleBack}
-                type="button"
-                className={`px-8 py-2.5 rounded-full text-white text-sm font-semibold transition-all shadow-md bg-gray-600 hover:bg-gray-700 shadow-gray-200 hover:shadow-gray-300 cursor-pointer`}
-              >
-                Back
-              </button>
-            )}
-            {!isLastStep && (
-              <button
-                onClick={handleNext}
-                type="button"
-                className={`px-8 py-2.5 rounded-full text-white text-sm font-semibold transition-all shadow-md bg-blue-600 hover:bg-blue-700 shadow-blue-200 hover:shadow-blue-300 cursor-pointer`}
-                disabled={loading}
-              >
-                Next
-              </button>
-            )}
-            {isLastStep && (
-              <button
-                type="submit"
-                className={`px-8 py-2.5 rounded-full text-white text-sm font-semibold transition-all shadow-md bg-green-600 hover:bg-green-700 shadow-green-200 hover:shadow-green-300 cursor-pointer`}
-                disabled={loading}
-              >
-                Submit
-              </button>
-            )}
-          </div>
+          <FormNavigation currentStep={currentStep} totalSteps={STEPS.length} loading={loading} onBack={handleBack} onNext={handleNext} />
         </form>
       </FormProvider>
     </div>
