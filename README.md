@@ -45,6 +45,8 @@ That's it. The app is ready to use.
 | POST | `/api/company/draft` | Save company draft |
 | GET | `/api/company/draft/:sessionId` | Get saved draft |
 | POST | `/api/shareholder` | Submit shareholders |
+| GET | `/api/company/all` | Get all companies |
+| GET | `/api/company/all-with-shareholders` | Get all companies with their respective shareholders |
 
 ## Database
 
