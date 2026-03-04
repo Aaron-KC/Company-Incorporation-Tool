@@ -16,7 +16,6 @@ Make sure you have the following installed:
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-That's it. No need to install Node.js, MySQL, or any other dependencies manually.
 
 ## Getting Started
 
